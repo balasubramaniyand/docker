@@ -1,0 +1,35 @@
+import smtplib
+from email.mime.text import MIMEText
+
+# SMTP configuration
+SMTP_HOST = 'chnrelay.growipx.com'
+SMTP_PORT = 587
+SMTP_USER = 'supporfirst_dev@iopex.com'
+SMTP_PASSWORD = 'twrlwoapmikkddpp'
+SMTP_MAIL_FROM = 'supporfirst_dev@iopex.com'
+
+# Email content
+subject = "Test Email"
+body = "This is a test email from Apache Superset."
+
+# Create message
+msg = MIMEText(body)
+msg['From'] = SMTP_MAIL_FROM
+msg['To'] = 'balasubramaniyan.d@iopex.com'  # Replace with recipient's email address
+msg['Subject'] = subject
+
+try:
+    # Connect to SMTP server
+    server = smtplib.SMTP(SMTP_HOST, SMTP_PORT)
+    server.starttls()
+    server.login(SMTP_USER, SMTP_PASSWORD)
+
+    # Send email
+    server.sendmail(SMTP_MAIL_FROM, 'balasubramaniyan.d@iopex.com', msg.as_string())
+
+    # Close connection
+    server.quit()
+
+    print("Test email sent successfully.")
+except Exception as e:
+    print("An error occurred while sending the test email:", str(e))
