@@ -1,0 +1,35 @@
+import smtplib
+from email.mime.text import MIMEText
+
+# SMTP configuration
+SMTP_HOST = 'smtp.yourdomain.com'
+SMTP_PORT = 587
+SMTP_USER = 'your_email@yourdomain.com'
+SMTP_PASSWORD = 'your_password'
+SMTP_MAIL_FROM = 'superset@yourdomain.com'
+
+# Email content
+subject = "Test Email"
+body = "This is a test email from Superset."
+
+# Create the message
+msg = MIMEText(body)
+msg['From'] = SMTP_MAIL_FROM
+msg['To'] = 'recipient@example.com'  # Replace with recipient's email address
+msg['Subject'] = subject
+
+try:
+    # Connect to SMTP server
+    server = smtplib.SMTP(SMTP_HOST, SMTP_PORT)
+    server.starttls()
+    server.login(SMTP_USER, SMTP_PASSWORD)
+
+    # Send email
+    server.sendmail(SMTP_MAIL_FROM, 'recipient@example.com', msg.as_string())
+
+    # Close connection
+    server.quit()
+
+    print("Test email sent successfully.")
+except Exception as e:
+    print("An error occurred while sending the test email:", str(e))
