@@ -1,0 +1,24 @@
+root@superset:/var/opt/nginx# docker images
+REPOSITORY                                       TAG        IMAGE ID       CREATED         SIZE
+postgres                                         14         c071c4234da3   5 months ago    416MB
+redis                                            7          e40e2763392d   5 months ago    138MB
+apachesuperset.docker.scarf.sh/apache/superset   3.0.0      41a09f027ea3   7 months ago    1.11GB
+iopexlabs/arlo_superset                          1.4        1357199009d7   8 months ago    2.39GB
+postgres                                         <none>     5fb1753eb50a   9 months ago    409MB
+iopexlabs/arlo_superset                          1.3        e3553cf24f43   9 months ago    2.39GB
+redis                                            <none>     e0ce02f88e58   9 months ago    130MB
+raghuveerat/arlosuperset                         1.backup   26227b4ba7df   13 months ago   1.71GB
+raghuveerat/superset                             dev        bfbc5378c594   14 months ago   1.66GB
+nginx                                            latest     3f8a00f137a0   15 months ago   142MB
+iopexlabs/superset                               1.2        e11641b190ec   2 years ago     1.7GB
+iopexlabs/superset                               1.4        e581cf435930   2 years ago     1.7GB
+nginx                                            1.21       f652ca386ed1   2 years ago     141MB
+redis                                            latest     02c7f2054405   2 years ago     105MB
+postgres                                         10         630f5b9a1a00   2 years ago     200MB
+raghuveerat/postgres10                           1.1        630f5b9a1a00   2 years ago     200MB
+apache/superset                                  latest     acf8ea1c17a4   2 years ago     1.44GB
+postgres                                         12         14566088fc00   2 years ago     314MB
+root@superset:/var/opt/nginx# docker save apache/superset apache/superset.tar
+cowardly refusing to save to a terminal. Use the -o flag or redirect
+root@superset:/var/opt/nginx# 
+
