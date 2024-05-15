@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Check if port 9000 is not running
+if ! netstat -tuln | grep ":9000" > /dev/null; then
+    SUBJECT="Alert !! IMAP Service is down"
+    FROM="supporfirst_dev@iopex.com"
+    TO="balasubramaniyan.d@iopex.com"
+    CC="rohith.venkatesh@iopex.com, meena.velkumar@iopex.com"
+    BODY="Hello Team,
+
+The IMAP service is not running on the server. Please restart the service.
+
+
+Thankyou"
+
+    # Send email notification
+#    echo "$BODY" | mail -s "$SUBJECT" -r "$FROM" "$TO" "$CC"
+
+/usr/sbin/sendmail -t -i -f "$FROM" << EOF
+From: $FROM
+To: $TO
+Cc: $CC
+Subject: $SUBJECT
+MIME-Version: 1.0
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+echo $BODY
+
+    
+EOF
+    # Check if email was sent successfully
+    if [ $? -eq 0 ]; then
+        echo "Email notification sent successfully."
+    else
+        echo "Failed to send email notification."
+    fi
+fi
+root@testgit:~/test# 
