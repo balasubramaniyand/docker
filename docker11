@@ -1,0 +1,13 @@
+balasubramaniyand@CHNIOPEXL5097:~/api$ ls
+airflow           connection          fixtures           nginx                README.md             templates
+background.conf   contract_analysis   format_conversion  nifi                 requirements.txt      test-docker-compose.yml
+background.sh     datapipe            layout             opexwise             servicenow_dashboard  uipath
+bot_analysis      datawarehouse       manage.py          opexwise-cron        start.sh              widget
+bot_optimization  docker-compose.yml  media              opexwise.ini         storyboard            workflow
+common            Dockerfile          mlmodel            predictive_analysis  swagger
+balasubramaniyand@CHNIOPEXL5097:~/api$ 
+balasubramaniyand@CHNIOPEXL5097:~/api$ sudo docker-compose -f docker-compose.yml up -d
+ERROR: invalid reference format
+balasubramaniyand@CHNIOPEXL5097:~/api$ 
+
+
