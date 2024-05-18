@@ -1,0 +1,18 @@
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+sudo docker -- version 
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.13.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+sudo docker --version
+
+
+wget https://desktop.docker.com/linux/main/amd64/docker-desktop-4.30.0-amd64.deb
+sudo dpkg -i docker-desktop-4.30.0-amd64.deb
+sudo apt-get install -f
+systemctl --user start docker-desktop
+systemctl --user enable docker-desktop
+systemctl --user status docker-desktop
+sudo usermod -aG docker $USER
+docker-desktop
+journalctl --user-unit docker-desktop.service
