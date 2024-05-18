@@ -1,7 +1,17 @@
-balasubramaniyand@CHNIOPEXL5097:~/Downloads$ sudo apt-get remove docker-desktop
-Command 'sudo' is available in the following places
- * /bin/sudo
- * /usr/bin/sudo
-The command could not be located because '/usr/bin:/bin' is not included in the PATH environment variable.
-sudo: command not found
-balasubramaniyand@CHNIOPEXL5097:~/Downloads$
+version: '2.1'
+networks:
+  iopex_network:
+    external: true
+services:
+  opexwiseui:
+    image: iopexlabs/opexwise_ui:2
+      build .
+    restart: on-failure:5
+    networks:
+      - iopex_network
+    hostname: opexwiseui
+    healthcheck:
+      test: pgrep -f nginx || exit 1
+      interval: 10m
+      timeout: 10s
+      retries: 3
