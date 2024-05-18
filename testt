@@ -1,0 +1,41 @@
+balasubramaniyand@CHNIOPEXL5097:/opt/bala1/kafka_nlp_api$ sudo docker-compose up
+ERROR: yaml.parser.ParserError: while parsing a block mapping
+  in "./docker-compose.yml", line 6, column 3
+expected <block end>, but found '<block mapping start>'
+  in "./docker-compose.yml", line 9, column 5
+balasubramaniyand@CHNIOPEXL5097:/opt/bala1/kafka_nlp_api$ cat docker-compose.yml 
+version: '3.3'
+networks:
+  iopex_network:
+    external: true
+services:
+  nlp_api:
+    image:api/kafaka:latest #3.1
+#    build: .
+    ports:
+      - "8051:80"
+    environment:
+       - APP_URL=http://localhost:8051
+       - SENTIMENT_ANALYSIS_URL=http://localhost:8060/sentiment_analysis
+       - FAST_API_MODEL_TRAINING=http://localhost:8052/
+       - KAFKA_SERVER_URL=localhost:9092
+    networks:
+      - 'iopex_network'
+    depends_on:
+      - text_classification_api_db
+    restart: on-failure:5
+    volumes:
+      - "./logger:/var/opt/logger"
+      - "./media:/var/opt/media"
+  text_classification_api_db:
+    image: postgres:12
+    networks:
+      - 'iopex_network'
+    restart: on-failure:5
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: text_classification
+      POSTGRES_PASSWORD: iopex@123
+balasubramaniyand@CHNIOPEXL5097:/opt/bala1/kafka_nlp_api$ 
+
