@@ -1,0 +1,5 @@
+docker compose version
+exec: "com.docker.cli": executable file not found in $PATH
+Current PATH : /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/balasubramaniyand/Downloads
+balasubramaniyand@CHNIOPEXL5097:~/Downloads$ 
+
