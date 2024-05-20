@@ -1,0 +1,25 @@
+root@opexwise-ui-dev:~/testui/opexwise-ui# docker-compose.yml up -d
+docker-compose.yml: command not found
+root@opexwise-ui-dev:~/testui/opexwise-ui# ls
+angular.json  dist    docker-compose.yml  karma.conf.js  package-lock.json  src                tsconfig.json       tslint.json
+build         docker  e2e                 package.json   README.md          tsconfig.app.json  tsconfig.spec.json
+root@opexwise-ui-dev:~/testui/opexwise-ui# cat docker-compose.yml 
+version: '2.1'
+networks:
+  iopex_network:
+    external: true
+services:
+  build:
+    build: .      
+  opexwiseui:     
+    image: iopexlabs/opexwise_ui:dev.16
+    restart: on-failure:5
+    networks:
+      - iopex_network
+    hostname: opexwiseui
+    healthcheck:
+      test: pgrep -f nginx || exit 1
+      interval: 10m
+      timeout: 10s
+      retries: 3
+root@opexwise-ui-dev:~/testui/opexwise-ui# 
