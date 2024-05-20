@@ -1,31 +1,56 @@
-#!/bin/bash
+balasubramaniyand@CHNIOPEXL5097:~/ui/opexwise-ui$ sudo docker build -t bala999 .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
 
-# Check if port 8090 is not running
-if ! netstat -tuln | grep -q ":8090"; then
-    SUBJECT="Alert !! IMAP Service is down"
-    FROM="supportfirst_dev@iopex.com"
-    TO="balasubramaniyan.d@iopex.com"
-    CC="rohith.venkatesh@iopex.com, meena.velkumar@iopex.com"
-    BODY="Hello Team,
+Sending build context to Docker daemon  193.7MB
+Step 1/13 : FROM node:20.11.0 as BUILDER
+ ---> 683cfa47c0ac
+Step 2/13 : RUN mkdir /app
+ ---> Using cache
+ ---> ddc5cd1db265
+Step 3/13 : WORKDIR /app
+ ---> Using cache
+ ---> 83346608194c
+Step 4/13 : COPY . .
+ ---> Using cache
+ ---> 05e0d5f1acfe
+Step 5/13 : RUN npm install --force
+ ---> Using cache
+ ---> 84ff77073595
+Step 6/13 : RUN npm run ng build
+ ---> Using cache
+ ---> 63355bf919d2
+Step 7/13 : FROM nginx:1.18.0
+ ---> c2c45d506085
+Step 8/13 : LABEL maintainer="Raghuveera T"
+ ---> Using cache
+ ---> 45e490c88bbc
+Step 9/13 : WORKDIR /usr/share/nginx/html
+ ---> Using cache
+ ---> a0117ccd8afe
+Step 10/13 : COPY --from=BUILDER /app/dist/. /usr/share/nginx/html
+ ---> Using cache
+ ---> ee2da7ea6e43
+Step 11/13 : COPY ./default.conf /etc/nginx/conf.d/
+COPY failed: file not found in build context or excluded by .dockerignore: stat default.conf: file does not exist
+balasubramaniyand@CHNIOPEXL5097:~/ui/opexwise-ui$ cat Dockerfile 
+#ui angular
+FROM node:20.11.0 as BUILDER
+RUN mkdir /app
+WORKDIR /app
+COPY . .
+RUN npm install --force
+RUN npm run ng build
+#run
+FROM nginx:1.18.0
+LABEL maintainer="Raghuveera T"
+WORKDIR /usr/share/nginx/html
+#COPY -r --from=BUILDER /app/dist/healthcredhub. /usr/share/nginx/html
+COPY --from=BUILDER /app/dist/. /usr/share/nginx/html
+COPY ./default.conf /etc/nginx/conf.d/
+EXPOSE 80
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
 
-The IMAP service is not running on the server. Please restart the service.
+balasubramaniyand@CHNIOPEXL5097:~/ui/opexwise-ui$ 
 
-Thank you"
-
-    # Send email notification using sendmail
-    /usr/sbin/sendmail -t << EOF
-From: $FROM
-To: $TO
-Cc: $CC
-Subject: $SUBJECT
-
-$BODY
-EOF
-
-    # Check if email was sent successfully
-    if [ $? -eq 0 ]; then
-        echo "Email notification sent successfully."
-    else
-        echo "Failed to send email notification."
-    fi
-fi
