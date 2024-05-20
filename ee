@@ -1,0 +1,77 @@
+balasubramaniyand@CHNIOPEXL5097:~/ui/opexwise-ui/docker$ cat docker-compose.yml 
+version: '2.1'
+networks:
+  iopex_network:
+    external: true
+services:
+  build:
+    build: .
+  opexwiseui:
+    image: iopexlabs/opexwise_ui:dev:16
+    restart: on-failure:5
+    networks:
+      - iopex_network
+    hostname: opexwiseui
+    healthcheck:
+      test: pgrep -f nginx || exit 1
+      interval: 10m
+      timeout: 10s
+      retries: 3
+balasubramaniyand@CHNIOPEXL5097:~/ui/opexwise-ui/docker$ cat Dockerfile 
+FROM nginx:1.14-alpine
+
+MAINTAINER Vinoth Vetrivel <vinoth.vetrivel@iopex.com>
+
+ARG CLIENT_NAME=config
+
+# Install system dependencies
+RUN apk --update add --no-cache vim bash
+
+WORKDIR /var/opt
+
+ADD ./ /var/opt/
+
+RUN mv build/* .
+RUN mv opexwise/* .
+
+# COPY ./build/assets/config/${CLIENT_NAME}.json /var/opt/assets/config/config.json
+
+RUN rm -rf build
+
+HEALTHCHECK CMD pgrep -f nginx || exit 1
+
+RUN cp -f nginx.conf /etc/nginx/
+balasubramaniyand@CHNIOPEXL5097:~/ui/opexwise-ui/docker$ sudo docker-compose build 
+opexwiseui uses an image, skipping
+Building build
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  24.15MB
+Step 1/11 : FROM nginx:1.14-alpine
+ ---> 8a2fb25a19f5
+Step 2/11 : MAINTAINER Vinoth Vetrivel <vinoth.vetrivel@iopex.com>
+ ---> Using cache
+ ---> 32e80a2c0e48
+Step 3/11 : ARG CLIENT_NAME=config
+ ---> Using cache
+ ---> c0994098a326
+Step 4/11 : RUN apk --update add --no-cache vim bash
+ ---> Using cache
+ ---> 82b42a5bdb8f
+Step 5/11 : WORKDIR /var/opt
+ ---> Using cache
+ ---> 35ec1fb4de74
+Step 6/11 : ADD ./ /var/opt/
+ ---> Using cache
+ ---> e79e6efd70d2
+Step 7/11 : RUN mv build/* .
+ ---> Using cache
+ ---> 784bd78626bb
+Step 8/11 : RUN mv opexwise/* .
+ ---> Running in dea478b392f0
+mv: can't rename 'opexwise/*': No such file or directory
+The command '/bin/sh -c mv opexwise/* .' returned a non-zero code: 1
+ERROR: Service 'build' failed to build : Build failed
+balasubramaniyand@CHNIOPEXL5097:~/ui/opexwise-ui/docker$ 
